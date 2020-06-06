@@ -11,6 +11,7 @@ namespace Catstagram.Server
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.IdentityModel.Tokens;
     using System.Text;
+    using Catstagram.Server.Infrastructure;
 
     public class Startup
     {
@@ -29,14 +30,22 @@ namespace Catstagram.Server
                         this.Configuration.GetConnectionString("DefaultConnection")));
 
             services
-                .AddIdentity<IdentityUser, IdentityRole>()
+                .AddIdentity<IdentityUser, IdentityRole>(options =>
+                {
+                    options.User.RequireUniqueEmail = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
                 .AddEntityFrameworkStores<CatstagramDbContext>();
 
             IConfigurationSection appSettingsSection = this.Configuration.GetSection("ApplicationSettings");
             services.Configure<ApplicationSettings>(appSettingsSection);
 
-            var settings = appSettingsSection.Get<ApplicationSettings>();
-            var key = Encoding.ASCII.GetBytes(settings.Secret);
+            ApplicationSettings settings = appSettingsSection.Get<ApplicationSettings>();
+            byte[] key = Encoding.ASCII.GetBytes(settings.Secret);
 
             services.AddAuthentication(x =>
             {
@@ -65,15 +74,13 @@ namespace Catstagram.Server
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-            app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(options => options
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -82,6 +89,8 @@ namespace Catstagram.Server
             {
                 endpoints.MapControllers();
             });
+
+            app.ApplyMigrations();
         }
     }
 }

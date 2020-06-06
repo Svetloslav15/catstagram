@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-namespace Catstagram.Server.Data
+﻿namespace Catstagram.Server.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    using Catstagram.Server.Data.Models;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
+
+    public class CatstagramDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public CatstagramDbContext(DbContextOptions<CatstagramDbContext> options)
             : base(options)
         {
         }
