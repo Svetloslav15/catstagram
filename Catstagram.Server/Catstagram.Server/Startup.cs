@@ -1,24 +1,24 @@
 namespace Catstagram.Server
 {
+    using Catstagram.Server.Data;
+    using Catstagram.Server.Infrastructure;
+    using Catstagram.Server.Data.Models;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
-    using Catstagram.Server.Data;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.IdentityModel.Tokens;
+    
     using System.Text;
-    using Catstagram.Server.Infrastructure;
-
+  
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => this.Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
@@ -30,7 +30,7 @@ namespace Catstagram.Server
                         this.Configuration.GetConnectionString("DefaultConnection")));
 
             services
-                .AddIdentity<IdentityUser, IdentityRole>(options =>
+                .AddIdentity<User, IdentityRole>(options =>
                 {
                     options.User.RequireUniqueEmail = false;
                     options.Password.RequireDigit = false;

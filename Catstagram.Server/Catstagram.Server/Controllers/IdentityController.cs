@@ -2,9 +2,12 @@
 {
     using Catstagram.Server.Data.Models;
     using Catstagram.Server.Models.Identity;
+    
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
+
     using System;
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
@@ -18,10 +21,10 @@
 
         public IdentityController(
             UserManager<User> userManager,
-            ApplicationSettings appSettings)
+            IOptions<ApplicationSettings> appSettings)
         {
             this.userManager = userManager;
-            this.appSettings = appSettings;
+            this.appSettings = appSettings.Value;
         }
 
         [HttpPost]
