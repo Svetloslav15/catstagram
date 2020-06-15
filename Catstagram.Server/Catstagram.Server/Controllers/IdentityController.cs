@@ -49,7 +49,7 @@
 
         [HttpPost]
         [Route(nameof(Login))]
-        public async Task<ActionResult<string>> Login(LoginUserRequestModel model)
+        public async Task<ActionResult<object>> Login(LoginUserRequestModel model)
         {
             User user = await this.userManager.FindByNameAsync(model.Username);
 
@@ -79,7 +79,10 @@
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             string encryptedToken = tokenHandler.WriteToken(token);
 
-            return encryptedToken;
+            return new
+            {
+                Token = encryptedToken
+            };
         }
     }
 }
