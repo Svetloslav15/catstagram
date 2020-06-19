@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Catstagram.Server.Models.Cats
+﻿namespace Catstagram.Server.Models.Cats
 {
+    using System.ComponentModel.DataAnnotations;
+    using static Data.Validation.Cat;
+
     public class CreateCatRequestModel
     {
+        [Required]
+        [MaxLength(MaxDescription)]
+        public string Description { get; set; }
+
+        [Required]
+        public string ImageUrl { get; set; }
     }
 }
