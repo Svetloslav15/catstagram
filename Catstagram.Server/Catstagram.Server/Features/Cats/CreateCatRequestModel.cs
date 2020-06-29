@@ -5,7 +5,6 @@
 
     public class CreateCatRequestModel
     {
-        [Required]
         [MaxLength(MaxDescription)]
         public string Description { get; set; }
 
